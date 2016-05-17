@@ -1,38 +1,31 @@
-/* Š„‚èž‚ÝŠÖŒW */
 
 #include "bootpack.h"
-#include <stdio.h>
 
 void init_pic(void)
-/* PIC‚Ì‰Šú‰» */
+// PIC åˆå§‹åŒ–
 {
-	io_out8(PIC0_IMR,  0xff  ); /* ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
-	io_out8(PIC1_IMR,  0xff  ); /* ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
+	io_out8(PIC0_IMR,  0xff  ); /*ç¦æ­¢æ‰€æœ‰ä¸­æ–­*/
+	io_out8(PIC1_IMR,  0xff  ); /*ç¦æ­¢æ‰€æœ‰ä¸­æ–­*/
 
-	io_out8(PIC0_ICW1, 0x11  ); /* ƒGƒbƒWƒgƒŠƒKƒ‚[ƒh */
-	io_out8(PIC0_ICW2, 0x20  ); /* IRQ0-7‚ÍAINT20-27‚ÅŽó‚¯‚é */
-	io_out8(PIC0_ICW3, 1 << 2); /* PIC1‚ÍIRQ2‚É‚ÄÚ‘± */
-	io_out8(PIC0_ICW4, 0x01  ); /* ƒmƒ“ƒoƒbƒtƒ@ƒ‚[ƒh */
+	io_out8(PIC0_ICW1, 0x11  ); /* è¾¹æ²¿è§¦å‘æ¨¡å¼ */
+	io_out8(PIC0_ICW2, 0x20  ); /* IRQ0-7ç”±INT20-27æŽ¥æ”¶*/
+	io_out8(PIC0_ICW3, 1 << 2); /* PIC1ç”±IRQ2è¿žæŽ¥*/
+	io_out8(PIC0_ICW4, 0x01  ); /* æ— ç¼“å†²åŒºæ¨¡å¼ */
 
-	io_out8(PIC1_ICW1, 0x11  ); /* ƒGƒbƒWƒgƒŠƒKƒ‚[ƒh */
-	io_out8(PIC1_ICW2, 0x28  ); /* IRQ8-15‚ÍAINT28-2f‚ÅŽó‚¯‚é */
-	io_out8(PIC1_ICW3, 2     ); /* PIC1‚ÍIRQ2‚É‚ÄÚ‘± */
-	io_out8(PIC1_ICW4, 0x01  ); /* ƒmƒ“ƒoƒbƒtƒ@ƒ‚[ƒh */
+	io_out8(PIC1_ICW1, 0x11  ); /* è¾¹æ²¿è§¦å‘æ¨¡å¼ */
+	io_out8(PIC1_ICW2, 0x28  ); /* IRQ8-15ç”±INT28-2fæŽ¥æ”¶ */
+	io_out8(PIC1_ICW3, 2     ); /* PIC1ç”±IRQ2è¿žæŽ¥ */
+	io_out8(PIC1_ICW4, 0x01  ); /* æ— ç¼“å†²åŒºæ¨¡å¼ */
 
-	io_out8(PIC0_IMR,  0xfb  ); /* 11111011 PIC1ˆÈŠO‚Í‘S‚Ä‹ÖŽ~ */
-	io_out8(PIC1_IMR,  0xff  ); /* 11111111 ‘S‚Ä‚ÌŠ„‚èž‚Ý‚ðŽó‚¯•t‚¯‚È‚¢ */
+	io_out8(PIC0_IMR,  0xfb  ); /* 11111011 PIC1ä»¥ä¸ºå…¨éƒ¨ç¦æ­¢ */
+	io_out8(PIC1_IMR,  0xff  ); /* 11111111 ç¦æ­¢æ‰€æœ‰ä¸­æ–­ */
 
 	return;
 }
 
+
 void inthandler27(int *esp)
-/* PIC0‚©‚ç‚Ì•sŠ®‘SŠ„‚èž‚Ý‘Îô */
-/* Athlon64X2‹@‚È‚Ç‚Å‚Íƒ`ƒbƒvƒZƒbƒg‚Ì“s‡‚É‚æ‚èPIC‚Ì‰Šú‰»Žž‚É‚±‚ÌŠ„‚èž‚Ý‚ª1“x‚¾‚¯‚¨‚±‚é */
-/* ‚±‚ÌŠ„‚èž‚Ýˆ—ŠÖ”‚ÍA‚»‚ÌŠ„‚èž‚Ý‚É‘Î‚µ‚Ä‰½‚à‚µ‚È‚¢‚Å‚â‚è‰ß‚²‚· */
-/* ‚È‚º‰½‚à‚µ‚È‚­‚Ä‚¢‚¢‚ÌH
-	¨  ‚±‚ÌŠ„‚èž‚Ý‚ÍPIC‰Šú‰»Žž‚Ì“d‹C“I‚ÈƒmƒCƒY‚É‚æ‚Á‚Ä”­¶‚µ‚½‚à‚Ì‚È‚Ì‚ÅA
-		‚Ü‚¶‚ß‚É‰½‚©ˆ—‚µ‚Ä‚â‚é•K—v‚ª‚È‚¢B									*/
 {
-	io_out8(PIC0_OCW2, 0x67); /* IRQ-07Žó•tŠ®—¹‚ðPIC‚É’Ê’m */
+	io_out8(PIC0_OCW2, 0x67); 
 	return;
 }

@@ -1,48 +1,43 @@
-/* ƒOƒ‰ƒtƒBƒbƒNˆ—ŠÖŒW */
-
 #include "bootpack.h"
 
-void init_palette(void)
-{
+void init_palette(void){
 	static unsigned char table_rgb[16 * 3] = {
-		0x00, 0x00, 0x00,	/*  0:• */
-		0xff, 0x00, 0x00,	/*  1:–¾‚é‚¢Ô */
-		0x00, 0xff, 0x00,	/*  2:–¾‚é‚¢—Î */
-		0xff, 0xff, 0x00,	/*  3:–¾‚é‚¢‰©F */
-		0x00, 0x00, 0xff,	/*  4:–¾‚é‚¢Â */
-		0xff, 0x00, 0xff,	/*  5:–¾‚é‚¢‡ */
-		0x00, 0xff, 0xff,	/*  6:–¾‚é‚¢…F */
-		0xff, 0xff, 0xff,	/*  7:”’ */
-		0xc6, 0xc6, 0xc6,	/*  8:–¾‚é‚¢ŠDF */
-		0x84, 0x00, 0x00,	/*  9:ˆÃ‚¢Ô */
-		0x00, 0x84, 0x00,	/* 10:ˆÃ‚¢—Î */
-		0x84, 0x84, 0x00,	/* 11:ˆÃ‚¢‰©F */
-		0x00, 0x00, 0x84,	/* 12:ˆÃ‚¢Â */
-		0x84, 0x00, 0x84,	/* 13:ˆÃ‚¢‡ */
-		0x00, 0x84, 0x84,	/* 14:ˆÃ‚¢…F */
-		0x84, 0x84, 0x84	/* 15:ˆÃ‚¢ŠDF */
+		0x00, 0x00, 0x00,	/*  0:Âé»‘*/
+		0xff, 0x00, 0x00,	/*  1:äº®çº¢*/
+		0x00, 0xff, 0x00,	/*  2:äº®ç»¿*/
+		0xff, 0xff, 0x00,	/*  3:äº®é»„*/
+		0x00, 0x00, 0xff,	/*  4:äº®è“*/
+		0xff, 0x00, 0xff,	/*  5:äº®ç´«*/
+		0x00, 0xff, 0xff,	/*  6:æµ…äº®è“*/
+		0xff, 0xff, 0xff,	/*  7:ç™½*/
+		0xc6, 0xc6, 0xc6,	/*  8:äº®ç°*/
+		0x84, 0x00, 0x00,	/*  9:æš—çº¢*/
+		0x00, 0x84, 0x00,	/* 10:æš—ç»¿*/
+		0x84, 0x84, 0x00,	/* 11:æš—é»„*/
+		0x00, 0x00, 0x84,	/* 12:æš—é’*/
+		0x84, 0x00, 0x84,	/* 13:æš—ç´«*/
+		0x00, 0x84, 0x84,	/* 14:æµ…æš—è“*/
+		0x84, 0x84, 0x84	/* 15:æš—ç°*/	
 	};
 	set_palette(0, 15, table_rgb);
 	return;
-
-	/* static char –½—ß‚ÍAƒf[ƒ^‚É‚µ‚©g‚¦‚È‚¢‚¯‚ÇDB–½—ß‘Š“– */
 }
 
-void set_palette(int start, int end, unsigned char *rgb)
-{
+void set_palette(int start, int end, unsigned char *rgb){
 	int i, eflags;
-	eflags = io_load_eflags();	/* Š„‚è‚İ‹–‰Âƒtƒ‰ƒO‚Ì’l‚ğ‹L˜^‚·‚é */
-	io_cli(); 					/* ‹–‰Âƒtƒ‰ƒO‚ğ0‚É‚µ‚ÄŠ„‚è‚İ‹Ö~‚É‚·‚é */
+	eflags = io_load_eflags(); 	// è®°å½•ä¸­æ–­è®¸å¯æ ‡è¯†çš„å€¼
+	io_cli();				   	// å°†ä¸­æ–­è®¸å¯æ ‡è¯†ç½®ä¸º0ï¼Œç¦æ­¢ä¸­æ–­
 	io_out8(0x03c8, start);
-	for (i = start; i <= end; i++) {
+	for (i = start; i <= end; i++){
 		io_out8(0x03c9, rgb[0] / 4);
 		io_out8(0x03c9, rgb[1] / 4);
 		io_out8(0x03c9, rgb[2] / 4);
 		rgb += 3;
 	}
-	io_store_eflags(eflags);	/* Š„‚è‚İ‹–‰Âƒtƒ‰ƒO‚ğŒ³‚É–ß‚· */
+	io_store_eflags(eflags);	// å¤åŸä¸­æ–­è®¸å¯æ ‡è¯†
 	return;
 }
+
 
 void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1)
 {
@@ -57,9 +52,8 @@ void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, i
 void init_screen8(char *vram, int x, int y)
 {
 	boxfill8(vram, x, COL8_008484,  0,     0,      x -  1, y - 29);
-	boxfill8(vram, x, COL8_C6C6C6,  0,     y - 28, x -  1, y - 28);
+	boxfill8(vram, x, COL8_C6C6C6,  0,     y - 28, x -  1, y - -1);
 	boxfill8(vram, x, COL8_FFFFFF,  0,     y - 27, x -  1, y - 27);
-	boxfill8(vram, x, COL8_C6C6C6,  0,     y - 26, x -  1, y -  1);
 
 	boxfill8(vram, x, COL8_FFFFFF,  3,     y - 24, 59,     y - 24);
 	boxfill8(vram, x, COL8_FFFFFF,  2,     y - 24,  2,     y -  4);
@@ -94,10 +88,9 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 	return;
 }
 
-void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s)
-{
+void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s){
 	extern char hankaku[4096];
-	for (; *s != 0x00; s++) {
+	for(; *s != 0x00; s++){
 		putfont8(vram, xsize, x, y, c, hankaku + *s * 16);
 		x += 8;
 	}
@@ -105,42 +98,41 @@ void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s
 }
 
 void init_mouse_cursor8(char *mouse, char bc)
-/* ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ€”õi16x16j */
+// å‡†å¤‡é¼ æ ‡æŒ‡é’ˆï¼ˆ16*16)
 {
 	static char cursor[16][16] = {
-		"**************..",
-		"*OOOOOOOOOOO*...",
-		"*OOOOOOOOOO*....",
-		"*OOOOOOOOO*.....",
-		"*OOOOOOOO*......",
-		"*OOOOOOO*.......",
-		"*OOOOOOO*.......",
-		"*OOOOOOOO*......",
-		"*OOOO**OOO*.....",
-		"*OOO*..*OOO*....",
-		"*OO*....*OOO*...",
-		"*O*......*OOO*..",
-		"**........*OOO*.",
-		"*..........*OOO*",
-		"............*OO*",
-		".............***"
-	};
-	int x, y;
-
-	for (y = 0; y < 16; y++) {
-		for (x = 0; x < 16; x++) {
-			if (cursor[y][x] == '*') {
-				mouse[y * 16 + x] = COL8_000000;
-			}
-			if (cursor[y][x] == 'O') {
-				mouse[y * 16 + x] = COL8_FFFFFF;
-			}
-			if (cursor[y][x] == '.') {
-				mouse[y * 16 + x] = bc;
-			}
-		}
-	}
-	return;
+        "*...............",
+        "**..............",
+        "*O*.............",
+        "*OO*............",
+        "*OOO*...........",
+        "*OOOO*..........",
+        "*OOOOO*.........",
+        "*OOOOOO*........",
+        "*OOOOOOO*.......",
+        "*OOOO*****......",
+        "*OO*O*..........",
+        "*O*.*O*.........",
+        "**..*O*.........",
+        "*....*O*........",
+        ".....*O*........",
+        "......*........."
+    };
+    int x, y;
+    for (y = 0; y < 16; y++){
+    	for (x = 0; x < 16; x++){
+    		if (cursor[y][x] == '*'){
+    			mouse[y * 16 + x] = COL8_000000;
+    		}
+    		if (cursor[y][x] == 'O'){
+    			mouse[y * 16 + x] = COL8_FFFFFF;
+    		}
+    		if (cursor[y][x] == '.'){
+    			mouse[y *16 + x] = bc;
+    		}
+    	}
+    }
+    return;
 }
 
 void putblock8_8(char *vram, int vxsize, int pxsize,

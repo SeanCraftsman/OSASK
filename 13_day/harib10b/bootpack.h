@@ -1,10 +1,10 @@
 /* asmhead.nas */
 struct BOOTINFO { /* 0x0ff0-0x0fff */
-	char cyls; /* ƒu[ƒgƒZƒNƒ^‚Í‚Ç‚±‚Ü‚ÅƒfƒBƒXƒN‚ğ“Ç‚ñ‚¾‚Ì‚© */
-	char leds; /* ƒu[ƒg‚ÌƒL[ƒ{[ƒh‚ÌLED‚Ìó‘Ô */
-	char vmode; /* ƒrƒfƒIƒ‚[ƒh  ‰½ƒrƒbƒgƒJƒ‰[‚© */
+	char cyls; /*å¯åŠ¨åŒºè¯»ç¡¬ç›˜è¯»åˆ°ä½•å¤„ä¸ºæ­¢*/
+	char leds; /*å¯åŠ¨æ—¶é”®ç›˜çš„LEDçŠ¶æ€*/
+	char vmode; /*æ˜¾å¡æ¨¡å¼ä¸ºå¤šå°‘ä½å½©è‰²*/
 	char reserve;
-	short scrnx, scrny; /* ‰æ–Ê‰ğ‘œ“x */
+	short scrnx, scrny; /*ç”»é¢åˆ†è¾¨ç‡*/
 	char *vram;
 };
 #define ADR_BOOTINFO	0x00000ff0
@@ -124,12 +124,12 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 extern struct FIFO8 mousefifo;
 
 /* memory.c */
-#define MEMMAN_FREES		4090	/* ‚±‚ê‚Å–ñ32KB */
+#define MEMMAN_FREES		4090	/* â€šÂ±â€šÃªâ€šÃ…â€“Ã±32KB */
 #define MEMMAN_ADDR			0x003c0000
-struct FREEINFO {	/* ‚ ‚«î•ñ */
+struct FREEINFO { // å¯ç”¨ä¿¡æ¯
 	unsigned int addr, size;
 };
-struct MEMMAN {		/* ƒƒ‚ƒŠŠÇ— */
+struct MEMMAN { // å†…å­˜ç®¡ç†
 	int frees, maxfrees, lostsize, losts;
 	struct FREEINFO free[MEMMAN_FREES];
 };
@@ -142,7 +142,7 @@ unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size);
 int memman_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
 
 /* sheet.c */
-#define MAX_SHEETS		256
+#define MAX_SHEETS 256
 struct SHEET {
 	unsigned char *buf;
 	int bxsize, bysize, vx0, vy0, col_inv, height, flags;
@@ -158,7 +158,7 @@ struct SHTCTL *shtctl_init(struct MEMMAN *memman, unsigned char *vram, int xsize
 struct SHEET *sheet_alloc(struct SHTCTL *ctl);
 void sheet_setbuf(struct SHEET *sht, unsigned char *buf, int xsize, int ysize, int col_inv);
 void sheet_updown(struct SHEET *sht, int height);
-void sheet_refresh(struct SHEET *sht, int bx0, int by0, int bx1, int by1);
+void sheet_refresh( struct SHEET *sht, int bx0, int by0, int bx1, int by1);
 void sheet_slide(struct SHEET *sht, int vx0, int vy0);
 void sheet_free(struct SHEET *sht);
 
@@ -171,8 +171,8 @@ struct TIMER {
 };
 struct TIMERCTL {
 	unsigned int count, next, using;
-	struct TIMER *timers[MAX_TIMER];
 	struct TIMER timers0[MAX_TIMER];
+	struct TIMER *timers[MAX_TIMER];
 };
 extern struct TIMERCTL timerctl;
 void init_pit(void);
